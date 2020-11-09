@@ -1,13 +1,13 @@
 
 
-#include "AD985X.h"
+#include "AD9850.h"
 #include <SPI.h>
 
 SPIClass myInterface(SPI_N);
 
-AD985X::AD985X() {}
+AD9850::AD9850() {}
 
-void AD985X::begin(int select, int resetPin, int FQUDPin) {
+void AD9850::begin(int select, int resetPin, int FQUDPin) {
     _select = select;
     _reset = resetPin;
     _fqud = FQUDPin;
@@ -23,7 +23,7 @@ void AD985X::begin(int select, int resetPin, int FQUDPin) {
     reset();
 }
 
-void AD985X::reset() {
+void AD9850::reset() {
     pulsePin(_reset);
     pulsePin(SPI_CLOCK);
     _config = 0;
@@ -32,17 +32,17 @@ void AD985X::reset() {
     writeData();
 }
 
-void AD985X::powerDown() {
+void AD9850::powerDown() {
     _config |= AD985X_POWERDOWN; // keep phase and REFCLK as is.
     writeData();
 }
 
-void AD985X::powerUp() {
+void AD9850::powerUp() {
     _config &= ~AD985X_POWERDOWN; // TODO MAGIC NR.
     writeData();
 }
 
-void AD985X::setPhase(uint8_t phase) {
+void AD9850::setPhase(uint8_t phase) {
     if (phase > 31)
         return;
     _config &= 0x07;
@@ -50,12 +50,12 @@ void AD985X::setPhase(uint8_t phase) {
     writeData();
 }
 
-void AD985X::pulsePin(uint8_t pin) {
+void AD9850::pulsePin(uint8_t pin) {
     digitalWrite(pin, HIGH);
     digitalWrite(pin, LOW);
 }
 
-void AD985X::writeData() {
+void AD9850::writeData() {
 
     uint32_t data = _factor;
 
@@ -75,7 +75,7 @@ void AD985X::writeData() {
     pulsePin(_fqud);
 }
 
-void AD985X::setFrequency(uint32_t freq) {
+void AD9850::setFrequency(uint32_t freq) {
     // fOUT = (Δ Phase × CLKIN)/2^32
     // 64 bit math to keep precision to the max
     _freq = freq;

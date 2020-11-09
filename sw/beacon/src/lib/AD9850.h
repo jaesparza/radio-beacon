@@ -4,9 +4,9 @@
 #define AD9850_MAX_FREQ  (20UL * 1000UL * 1000UL)
 #define AD985X_POWERDOWN 0x04
 
-class AD985X {
+class AD9850 {
   public:
-    AD985X();
+    AD9850();
 
     // for HW SPI only use lower 3 parameters.
     void begin(int select, int resetPin, int FQUDPin);

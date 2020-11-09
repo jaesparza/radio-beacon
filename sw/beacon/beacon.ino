@@ -1,15 +1,15 @@
-#include "./src/lib/AD985X.h"
+#include "./src/lib/AD9850.h"
 #include "HardwareConfig.h"
 #include <Arduino.h>
 
-AD985X freqGen;
+AD9850 oscillator;
 
 uint32_t freq = 0;
 
 void setup() {
     BEACON_SERIAL.begin(115200);
     initialized();
-    freqGen.begin(SELECT, RESET, FQUP);
+    oscillator.begin(SELECT, RESET, FQUP);
 }
 
 void loop() {
@@ -27,7 +27,7 @@ void loop() {
     */
     // freq =  20000000;
     freq = 10000000;
-    freqGen.setFrequency(freq);
+    oscillator.setFrequency(freq);
 }
 
 void initialized() {
