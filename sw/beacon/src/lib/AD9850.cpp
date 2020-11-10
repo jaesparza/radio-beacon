@@ -1,4 +1,11 @@
 
+/*
+ * Based on the library from R. Tilard
+ *     https : // github.com/RobTillaart/AD985X
+ *
+ * Simplifed to be used only with AD9850 for SPI interface.
+ * Congigurable to use a diferent SPI interface number than the primary one.
+ */
 
 #include "AD9850.h"
 #include <SPI.h>
@@ -18,8 +25,7 @@ void AD9850::begin(int select, int resetPin, int FQUDPin) {
     digitalWrite(_reset, LOW);
     digitalWrite(_fqud, LOW);
 
-    myInterface.begin(); // set MOSI & MISO pin
-                         // right.
+    myInterface.begin();
     reset();
 }
 
@@ -33,12 +39,12 @@ void AD9850::reset() {
 }
 
 void AD9850::powerDown() {
-    _config |= AD985X_POWERDOWN; // keep phase and REFCLK as is.
+    _config |= AD985X_POWERDOWN;
     writeData();
 }
 
 void AD9850::powerUp() {
-    _config &= ~AD985X_POWERDOWN; // TODO MAGIC NR.
+    _config &= ~AD985X_POWERDOWN;
     writeData();
 }
 

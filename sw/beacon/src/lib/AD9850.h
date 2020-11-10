@@ -1,4 +1,15 @@
+
+/*
+ * Based on the library from R. Tilard
+ *     https : // github.com/RobTillaart/AD985X
+ *
+ * Simplifed to be used only with AD9850 for SPI interface.
+ * Congigurable to use a diferent SPI interface number than the primary one.
+ */
+
+// Configured as specified in HardwareConfig
 #include "../../HardwareConfig.h"
+
 #include "Arduino.h"
 
 #define AD9850_MAX_FREQ  (20UL * 1000UL * 1000UL)
@@ -7,8 +18,6 @@
 class AD9850 {
   public:
     AD9850();
-
-    // for HW SPI only use lower 3 parameters.
     void begin(int select, int resetPin, int FQUDPin);
     void reset();
     void powerDown();
