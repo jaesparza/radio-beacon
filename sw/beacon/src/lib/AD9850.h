@@ -3,8 +3,10 @@
  *
  * Based on the library from R. Tilard
  *     https : // github.com/RobTillaart/AD985X
+ *
  * - Simplifed to be used only with AD9850 for SPI interface.
  * - Congigurable to use a diferent SPI interface number than the primary one.
+ * - Removed begin method and add constructor and initalization method.
  */
 
 #ifndef AD9850_DRIVER
@@ -17,8 +19,8 @@
 
 class AD9850 {
   public:
-    AD9850();
-    void begin(int spiInt, int spiClock, int select, int resetPin, int FQUDPin);
+    AD9850(int spiInt, int spiClock, int select, int resetPin, int FQUDPin);
+    void init();
     void reset();
     void powerDown();
     void powerUp();

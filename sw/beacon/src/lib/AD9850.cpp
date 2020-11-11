@@ -1,10 +1,7 @@
 
 /*
  *
- * Based on the library from R. Tilard
- *     https : // github.com/RobTillaart/AD985X
- * - Simplifed to be used only with AD9850 for SPI interface.
- * - Congigurable to use a diferent SPI interface number than the primary one.
+ *
  */
 
 #include "AD9850.h"
@@ -12,14 +9,17 @@
 
 SPIClass *myInterface;
 
-AD9850::AD9850() {}
-
-void AD9850::begin(int spiInt, int spiClock, int select, int resetPin,
-                   int FQUDPin) {
+AD9850::AD9850(int spiInt, int spiClock, int select, int resetPin,
+               int FQUDPin) {
     _select = select;
     _reset = resetPin;
     _fqud = FQUDPin;
     _spiClock = spiClock;
+    myInterface = new SPIClass(spiInt);
+}
+
+void AD9850::init() {
+
     pinMode(_select, OUTPUT);
     pinMode(_reset, OUTPUT);
     pinMode(_fqud, OUTPUT);
@@ -27,7 +27,6 @@ void AD9850::begin(int spiInt, int spiClock, int select, int resetPin,
     digitalWrite(_reset, LOW);
     digitalWrite(_fqud, LOW);
 
-    myInterface = new SPIClass(spiInt);
     myInterface->begin();
     reset();
 }
