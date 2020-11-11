@@ -1,23 +1,25 @@
 
 /*
+ *
  * Based on the library from R. Tilard
  *     https : // github.com/RobTillaart/AD985X
- *
- * Simplifed to be used only with AD9850 for SPI interface.
- * Congigurable to use a diferent SPI interface number than the primary one.
+ * - Simplifed to be used only with AD9850 for SPI interface.
+ * - Congigurable to use a diferent SPI interface number than the primary one.
  */
 
 #include "AD9850.h"
 #include <SPI.h>
 
-SPIClass myInterface(SPI_N);
+SPIClass *myInterface;
 
 AD9850::AD9850() {}
 
-void AD9850::begin(int select, int resetPin, int FQUDPin) {
+void AD9850::begin(int spiInt, int spiClock, int select, int resetPin,
+                   int FQUDPin) {
     _select = select;
     _reset = resetPin;
     _fqud = FQUDPin;
+    _spiClock = spiClock;
     pinMode(_select, OUTPUT);
     pinMode(_reset, OUTPUT);
     pinMode(_fqud, OUTPUT);
@@ -25,13 +27,14 @@ void AD9850::begin(int select, int resetPin, int FQUDPin) {
     digitalWrite(_reset, LOW);
     digitalWrite(_fqud, LOW);
 
-    myInterface.begin();
+    myInterface = new SPIClass(spiInt);
+    myInterface->begin();
     reset();
 }
 
 void AD9850::reset() {
     pulsePin(_reset);
-    pulsePin(SPI_CLOCK);
+    pulsePin(_spiClock);
     _config = 0;
     _freq = 0;
     _factor = 0;
@@ -65,17 +68,17 @@ void AD9850::writeData() {
 
     uint32_t data = _factor;
 
-    myInterface.beginTransaction(SPISettings(2000000, LSBFIRST, SPI_MODE0));
+    myInterface->beginTransaction(SPISettings(2000000, LSBFIRST, SPI_MODE0));
     digitalWrite(_select, LOW);
-    myInterface.transfer(data & 0xFF);
+    myInterface->transfer(data & 0xFF);
     data >>= 8;
-    myInterface.transfer(data & 0xFF);
+    myInterface->transfer(data & 0xFF);
     data >>= 8;
-    myInterface.transfer(data & 0xFF);
-    myInterface.transfer(data >> 8);
-    myInterface.transfer(_config);
+    myInterface->transfer(data & 0xFF);
+    myInterface->transfer(data >> 8);
+    myInterface->transfer(_config);
     digitalWrite(_select, HIGH);
-    myInterface.endTransaction();
+    myInterface->endTransaction();
 
     // update frequency + phase + control bits.
     pulsePin(_fqud);
