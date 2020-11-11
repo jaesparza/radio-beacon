@@ -8,8 +8,11 @@
  */
 
 // Configured as specified in HardwareConfig
-#include "../../HardwareConfig.h"
 
+#ifndef AD9850_DRIVER
+#define AD9850_DRIVER
+
+#include "../../HardwareConfig.h"
 #include "Arduino.h"
 
 #define AD9850_MAX_FREQ  (20UL * 1000UL * 1000UL)
@@ -47,3 +50,5 @@ class AD9850 {
     uint8_t _reset = 0;
     uint8_t _fqud = 0;
 };
+
+#endif
