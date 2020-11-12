@@ -27,24 +27,14 @@ void setup() {
     BEACON_SERIAL.begin(115200);
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
+    oscillator->setFrequency(10000000);
 
     messenger = new QRSS(oscillator);
-    freq = 10000000;
-    oscillator->setFrequency(freq);
+    messenger->setBaseFrequency(10000000);
 
     BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
-void loop() {}
-
-void testToneGeneration() {
-    freq = 10140250 + 1.468;
-    delay(1000);
-    oscillator->setFrequency(freq);
-    freq = freq + 1.468;
-    delay(1000);
-    oscillator->setFrequency(freq);
-    freq = freq + 1.468;
-    delay(1000);
-    oscillator->setFrequency(freq);
+void loop() {
+    messenger->generateTestSequence(5000, 10000000, 10);
 }
