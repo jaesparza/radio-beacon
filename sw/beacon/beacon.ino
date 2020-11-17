@@ -21,6 +21,7 @@ AD9850 *oscillator;
 QRSS *messenger;
 
 uint32_t freq = 0;
+uint32_t calibration = 96;
 
 void setup() {
 
@@ -36,5 +37,8 @@ void setup() {
 }
 
 void loop() {
-    messenger->generateTestSequence(5000, 10000000, 10);
+    // messenger->generateTestSequence(1000, 10000000, 10);
+    // messenger->generateTestWSPR();
+    messenger->txMessage("CQ CQ DE EA2ECV");
+    delay(1000);
 }
