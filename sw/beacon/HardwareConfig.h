@@ -13,15 +13,13 @@
 #define _5_5_COMPATIBLE
 
 #ifdef _3_3_V
-#define SPI_CLOCK 5
-#define SPI_MISO  6
-#define SPI_MOSI  7
+#define SPI_CLOCK PA5 // (5)
+// SPI_MISO  PA6 (6) , SPI_MOSI  PA7 (7)
 #endif
 
 #ifdef _5_5_COMPATIBLE
-#define SPI_CLOCK PB13 // 29
-#define SPI_MISO  PB14 // 30
-#define SPI_MOSI  PB15 // 31
+#define SPI_CLOCK PB13 // (29)
+// SPI_MISO  PB14(30) SPI_MOSI  PB15(31)
 #endif
 
 #endif /* HARDWARECONFIG_H_ */
