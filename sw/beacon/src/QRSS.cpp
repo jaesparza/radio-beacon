@@ -4,94 +4,92 @@ QRSS::QRSS(AD9850 *oscillator) {
     _oscillator = oscillator;
 }
 
-void QRSS::generateTestWSPR() {
-    uint32_t freq = 0;
-    freq = 10140250 + 1.468;
-    delay(10000);
-    _oscillator->setFrequency(freq);
-    freq = freq + 1.468;
-    delay(100000);
-    _oscillator->setFrequency(freq);
-    freq = freq + 1.468;
-    delay(100000);
-    _oscillator->setFrequency(freq);
+void QRSS::setBaseFrequency(uint32_t baseFrequency) {
+    _baseFrequency = baseFrequency;
 }
 
-void QRSS::generateTestSequence(uint16_t hold, uint32_t frequency,
-                                uint8_t deviation) {
-    delay(hold);
-    _oscillator->setFrequency(frequency);
-    delay(hold);
-    _oscillator->setFrequency(frequency + deviation);
-    delay(hold);
-    fskStop();
-    delay(hold);
-}
-
-void QRSS::testCWMessage() {
-    dot();
-    dot();
-    stop();
-    dash();
-    stop();
-    dot();
-    dot();
-    dash();
-    stop();
-    dot();
-    dot();
-    stop();
-    dash();
-    stop();
-}
-
-void QRSS::carrierOn() {
-    _oscillator->setFrequency(_baseFrequency);
-}
-
-void QRSS::carrierOff() {
-    _oscillator->setFrequency(0);
-}
-
-void QRSS::fskMessage() {
-    fskCWdot();
-    delay(5000);
-    fskCWdash();
-    delay(5000);
-}
-
+// These are the methods to do CW
 void QRSS::dot() {
-    carrierOn();
+    _oscillator->setFrequency(_baseFrequency);
     delay(DOT_CW);
-    carrierOff();
+    _oscillator->setFrequency(0);
     delay(100);
 }
 
 void QRSS::dash() {
-    carrierOn();
-    delay(DOT_CW * WEIGHT);
-    carrierOff();
+    _oscillator->setFrequency(_baseFrequency);
+    delay(DOT_CW * DASH_WEIGHT);
+    _oscillator->setFrequency(0);
     delay(100);
 }
 
 void QRSS::stop() {
-    delay(DOT_CW * 3);
-}
-
-void QRSS::fskStop() {
     _oscillator->setFrequency(0);
 }
 
+void QRSS::space() {
+    delay(DOT_CW * 3);
+}
+// End
+
+// These are the methods to do FSK
 void QRSS::fskCWdot() {
-    _oscillator->setFrequency(_baseFrequency + DOT);
+    _oscillator->setFrequency(_baseFrequency + FSK_HIGH);
+    delay(QRSS_DOT);
+    _oscillator->setFrequency(_baseFrequency);
+    delay(QRSS_DELAY);
 }
 
 void QRSS::fskCWdash() {
-    _oscillator->setFrequency(_baseFrequency + DASH);
+    _oscillator->setFrequency(_baseFrequency + FSK_HIGH);
+    delay(QRSS_DOT * QRSS_WEIGHT);
+    _oscillator->setFrequency(_baseFrequency);
+    delay(QRSS_DELAY);
 }
 
-void QRSS::setBaseFrequency(uint32_t baseFrequency) {
-    _baseFrequency = baseFrequency;
+void QRSS::fskStop() {
+    _oscillator->setFrequency(_baseFrequency);
+}
+
+void QRSS::fskSpace() {
+    delay(QRSS_DOT * 3);
+}
+// End
+
+void QRSS::txLetter(uint8_t character) {
+
+    uint8_t symbol = 7;
+
+    if (character == 0) {
+        space();
+        return;
+    }
+
+    // Finds the first symbol
+    while (character & 1 << symbol) {
+        symbol--;
+    }
+
+    while (symbol != 0) {
+        symbol--;
+        if (character & 1 << symbol) {
+            dash();
+        } else {
+            dot();
+        }
+    }
+    stop();
+    space();
+}
+
+void QRSS::txMessage(char *word) {
+
+    uint16_t messageLength = strlen(word);
+
+    // It will go through the message character by character and send it
+    for (uint16_t myChar = 0; myChar < strlen(word); myChar++) {
+        txLetter(charCode((uint8_t)word[myChar]));
+    }
 }
 
 uint8_t QRSS::charCode(char c) {
@@ -174,46 +172,5 @@ uint8_t QRSS::charCode(char c) {
         return 0b11010010; // /  -..-.
     default:
         return 0b00000000; // Space
-    }
-}
-
-void QRSS::txLetter(uint8_t character) {
-
-    uint8_t symbol = 7;
-
-    if (character == 0) {
-        space();
-        return;
-    }
-
-    // Finds the first symbol
-    while (character & 1 << symbol) {
-        symbol--;
-    }
-
-    while (symbol != 0) {
-        symbol--;
-        if (character & 1 << symbol) {
-            dash();
-        } else {
-            dot();
-        }
-    }
-    stop();
-}
-
-void QRSS::space() {
-    stop();
-}
-
-void QRSS::txMessage(char *word) {
-
-    uint16_t messageLength = strlen(word);
-
-    // It will go through the message character by character and send it
-    for (uint16_t myChar = 0; myChar < strlen(word); myChar++) {
-        // printf("%c", word[myChar]);
-        txLetter(charCode((uint8_t)word[myChar]));
-        // printf("\n");
     }
 }

@@ -7,25 +7,20 @@
 
 #include <string.h>
 
-#define DOT  0
-#define DASH 10
+#define DASH_WEIGHT 3
+#define DOT_CW      100
 
-#define WEIGHT 3
-
-#define DOT_CW 100
+#define QRSS_DOT    2000
+#define QRSS_WEIGHT 3
+#define QRSS_DELAY  2000
+#define FSK_HIGH    10
 
 class QRSS {
   public:
     QRSS(AD9850 *oscillator);
 
-    void generateTestWSPR();
-    void generateTestSequence(uint16_t delay, uint32_t frequency,
-                              uint8_t deviation);
     void setBaseFrequency(uint32_t _baseFrequency);
-
     void fskMessage();
-    void testCWMessage();
-
     void txMessage(char *word);
 
   private:
@@ -34,11 +29,12 @@ class QRSS {
 
     uint8_t charCode(char c);
     void txLetter(uint8_t character);
+
     void fskCWdot();
     void fskCWdash();
     void fskStop();
-    void carrierOff();
-    void carrierOn();
+    void fskSpace();
+
     void dot();
     void dash();
     void stop();
