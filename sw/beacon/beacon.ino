@@ -37,8 +37,6 @@ void setup() {
 }
 
 void loop() {
-    // messenger->generateTestSequence(1000, 10000000, 10);
-    // messenger->generateTestWSPR();
     messenger->txMessage("CQ CQ DE EA2ECV");
-    delay(1000);
+    delay(2000);
 }
