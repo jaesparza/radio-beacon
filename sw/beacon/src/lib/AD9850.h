@@ -1,12 +1,14 @@
 
 /*
+ * Filename: AD9850.h
  *
  * Based on the library from R. Tilard
- *     https : // github.com/RobTillaart/AD985X
+ *     https://github.com/RobTillaart/AD985X
  *
- * - Simplifed to be used only with AD9850 for SPI interface.
  * - Congigurable to use a diferent SPI interface number than the primary one.
+ * - Simplifed to be used only with AD9850 for SPI interface.
  * - Removed begin method and add constructor and initalization method.
+ * - Added calibration method
  */
 
 #ifndef AD9850_DRIVER
@@ -25,8 +27,9 @@ class AD9850 {
     void powerDown();
     void powerUp();
 
-    // 0 .. 10.000.000(?)
-    void setFrequency(uint32_t freq); // = 0  produces right error message
+    void setCalibration(uint16_t calibration);
+
+    void setFrequency(uint32_t freq);
     uint32_t getFrequency() {
         return _freq;
     };
@@ -49,6 +52,7 @@ class AD9850 {
     uint8_t _reset = 0;
     uint8_t _fqud = 0;
     uint8_t _spiClock = 0;
+    uint16_t _calibration = 0;
 };
 
 #endif

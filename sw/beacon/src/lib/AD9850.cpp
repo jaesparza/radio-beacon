@@ -1,6 +1,8 @@
-
 /*
+ * Filename: AD9850.cpp
  *
+ * Based on the library from R. Tilard
+ *     https://github.com/RobTillaart/AD985X
  *
  */
 
@@ -16,6 +18,10 @@ AD9850::AD9850(int spiInt, int spiClock, int select, int resetPin,
     _fqud = FQUDPin;
     _spiClock = spiClock;
     myInterface = new SPIClass(spiInt);
+}
+
+void AD9850::setCalibration(uint16_t calibration) {
+    _calibration = calibration;
 }
 
 void AD9850::init() {
@@ -87,6 +93,7 @@ void AD9850::setFrequency(uint32_t freq) {
     // fOUT = (Δ Phase × CLKIN)/2^32
     // 64 bit math to keep precision to the max
     _freq = freq;
-    _factor = (147573952590ULL * freq) >> 32; //  (1 << 64) / 125000000
+    _factor = (147573952590ULL * (freq + (uint16_t)_calibration)) >>
+              32; //  (1 << 64) / 125000000
     writeData();
 }
