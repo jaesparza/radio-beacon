@@ -4,57 +4,64 @@ QRSS::QRSS(AD9850 *oscillator) {
     _oscillator = oscillator;
 }
 
+QRSS::QRSS() {}
+
+FSK_SENDER::FSK_SENDER(AD9850 *oscillator) {
+    _oscillator = oscillator;
+}
+
 void QRSS::setBaseFrequency(uint32_t baseFrequency) {
     _baseFrequency = baseFrequency;
 }
 
-// These are the methods to do CW
-void QRSS::dot() {
+CW_SENDER::CW_SENDER(AD9850 *oscillator) {
+    _oscillator = oscillator;
+}
+
+void CW_SENDER::dot() {
     _oscillator->setFrequency(_baseFrequency);
     delay(DOT_CW);
     _oscillator->setFrequency(0);
     delay(100);
 }
 
-void QRSS::dash() {
+void CW_SENDER::dash() {
     _oscillator->setFrequency(_baseFrequency);
     delay(DOT_CW * DASH_WEIGHT);
     _oscillator->setFrequency(0);
     delay(100);
 }
 
-void QRSS::stop() {
+void CW_SENDER::stop() {
     _oscillator->setFrequency(0);
 }
 
-void QRSS::space() {
+void CW_SENDER::space() {
     delay(DOT_CW * 3);
 }
-// End
 
 // These are the methods to do FSK
-void QRSS::fskCWdot() {
+void FSK_SENDER::dot() {
     _oscillator->setFrequency(_baseFrequency + FSK_HIGH);
     delay(QRSS_DOT);
     _oscillator->setFrequency(_baseFrequency);
     delay(QRSS_DELAY);
 }
 
-void QRSS::fskCWdash() {
+void FSK_SENDER::dash() {
     _oscillator->setFrequency(_baseFrequency + FSK_HIGH);
     delay(QRSS_DOT * QRSS_WEIGHT);
     _oscillator->setFrequency(_baseFrequency);
     delay(QRSS_DELAY);
 }
 
-void QRSS::fskStop() {
+void FSK_SENDER::stop() {
     _oscillator->setFrequency(_baseFrequency);
 }
 
-void QRSS::fskSpace() {
+void FSK_SENDER::space() {
     delay(QRSS_DOT * 3);
 }
-// End
 
 void QRSS::txLetter(uint8_t character) {
 
