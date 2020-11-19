@@ -2,7 +2,7 @@
 /*
  * Filename: beacon.ino
  * Description: main file for the beacon controller.
- * Author: jaesparza - jaesparza@gmail.com
+ * Author: ja - jaesparza@gmail.com
  *
  * Compiled with arduino IDE version 1.8.10, edited with VScode and formatted
  * with with clang-format.
@@ -23,28 +23,42 @@ FSK_SENDER *fsk_messenger;
 
 uint32_t freq = 0;
 
-#define CALIBRATION 100      // [Hz]
-#define _30_M       10000000 // = 10MHz
+#define CALIBRATION                                                            \
+    100 // [Hz] Hardcoded calibration factor for the oscillator (will vary
+        // across samples)
 
-#define QRSS_MESSAGE "EA2ECV"
-#define CW_MESSAGE   "EA2ECV EA2ECV QTH COPENHAGEN DK 73"
+#define _30_M_QRSS 10140000 // 10MHz
+#define _20_M_QRSS 14096900 // 14MHz
+
+#define SHIFT                                                                  \
+    0 // [Hz] Hardcoded eviation around the center QRSS frequency. Based on the
+      // current bandplan in can range from -100 to +100 Hz
+
+// Default messages - ALWAYS in uppercase. Valid characters: A to Z (standard
+// english alphabet), 0 to 9 and /
+#define QRSS_MESSAGE "OZ/EA2ECV"
+#define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 
 void setup() {
 
-    BEACON_SERIAL.begin(115200);
+    // Serial output can be activated if needed
+    // BEACON_SERIAL.begin(115200);
 
+    // Create an oscillator instance, calibrate it and set initial frequency
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
     oscillator->setFrequency(_30_M);
 
+    // Create a CW sender for later use
     messenger = new CW_SENDER(oscillator);
     messenger->setBaseFrequency(_30_M);
 
+    // Create a fsk cw sender for later use
     fsk_messenger = new FSK_SENDER(oscillator);
     fsk_messenger->setBaseFrequency(_30_M);
 
-    BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
+    // BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
 void loop() {
