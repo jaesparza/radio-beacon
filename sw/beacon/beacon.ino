@@ -18,7 +18,8 @@
 #include <Arduino.h>
 
 AD9850 *oscillator;
-QRSS *messenger;
+CW_SENDER *messenger;
+FSK_SENDER *fsk_messenger;
 
 uint32_t freq = 0;
 uint32_t calibration = 96;
@@ -28,15 +29,19 @@ void setup() {
     BEACON_SERIAL.begin(115200);
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
-    oscillator->setFrequency(10000000);
 
-    messenger = new QRSS(oscillator);
+    messenger = new CW_SENDER(oscillator);
     messenger->setBaseFrequency(10000000);
+
+    fsk_messenger = new FSK_SENDER(oscillator);
+    fsk_messenger->setBaseFrequency(10000000);
 
     BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
 void loop() {
     messenger->txMessage("CQ CQ DE EA2ECV");
+    delay(2000);
+    fsk_messenger->txMessage("CQ CQ DE EA2ECV");
     delay(2000);
 }
