@@ -22,26 +22,34 @@ CW_SENDER *messenger;
 FSK_SENDER *fsk_messenger;
 
 uint32_t freq = 0;
-uint32_t calibration = 96;
+
+#define CALIBRATION 100      // [Hz]
+#define _30_M       10000000 // = 10MHz
+
+#define QRSS_MESSAGE "EA2ECV"
+#define CW_MESSAGE   "EA2ECV EA2ECV QTH COPENHAGEN DK 73"
 
 void setup() {
 
     BEACON_SERIAL.begin(115200);
+
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
+    oscillator->setCalibration(CALIBRATION);
+    oscillator->setFrequency(_30_M);
 
     messenger = new CW_SENDER(oscillator);
-    messenger->setBaseFrequency(10000000);
+    messenger->setBaseFrequency(_30_M);
 
     fsk_messenger = new FSK_SENDER(oscillator);
-    fsk_messenger->setBaseFrequency(10000000);
+    fsk_messenger->setBaseFrequency(_30_M);
 
     BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
 void loop() {
-    messenger->txMessage("CQ CQ DE EA2ECV");
+    messenger->txMessage(CW_MESSAGE);
     delay(2000);
-    fsk_messenger->txMessage("CQ CQ DE EA2ECV");
+    fsk_messenger->txMessage(QRSS_MESSAGE);
     delay(2000);
 }
