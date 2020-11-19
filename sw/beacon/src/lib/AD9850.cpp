@@ -4,6 +4,7 @@
  * Based on the library from R. Tilard
  *     https://github.com/RobTillaart/AD985X
  *
+ * Modifications described in AD9850.h
  */
 
 #include "AD9850.h"

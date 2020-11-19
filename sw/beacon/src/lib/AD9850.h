@@ -1,4 +1,3 @@
-
 /*
  * Filename: AD9850.h
  *
