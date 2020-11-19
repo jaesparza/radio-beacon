@@ -1,4 +1,15 @@
 
+/*
+ * Filename: QRSS.h
+ * Description:
+ *  This file contains the following classes:
+ *   - QRSS: interfaces the oscillator, sets the base frequency for the
+ *     transmission, and goe through a string message and sends it.
+ *   - CW_SENDER: implementation of the CW modulation with carrier ON/OFF keying
+ *   - FSK_SENDER: implementation of the FSK CW modulation.
+ *
+ * Author: ja - jaesparza@gmail.com
+ */
 
 #ifndef QRSS_MODE
 #define QRSS_MODE
@@ -21,7 +32,6 @@ class QRSS {
     QRSS(AD9850 *oscillator);
     QRSS();
     void setBaseFrequency(uint32_t _baseFrequency);
-    void fskMessage();
     void txMessage(char *word);
 
   protected:
@@ -38,6 +48,12 @@ class QRSS {
     virtual void space() = 0;
 };
 
+/*
+ * Class implementing traditional ON/OFF keying for CW
+ *
+ * DASH duration = DOT * DASH_WEIGHT
+ *
+ */
 class CW_SENDER : public QRSS {
   public:
     CW_SENDER(AD9850 *oscillator);
@@ -46,6 +62,18 @@ class CW_SENDER : public QRSS {
     void stop();
     void space();
 };
+
+/*
+ * Class implementing the Frequency Shift Keying (FSK) for CW
+ *
+ * DASH duration = DOT * QRSS_WEIGHT
+ *
+ *                                  DOT      DASH       DOT
+ * Frequency Base + FSK_HIGH         ----    --------    ----
+ *  .                                    |   |       |   |   |
+ *  .                                    |   |       |   |   |
+ * Frequency Base                        ----         ----    ----
+ */
 
 class FSK_SENDER : public QRSS {
   public:

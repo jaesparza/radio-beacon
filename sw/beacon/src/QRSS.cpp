@@ -1,3 +1,11 @@
+/*
+ * Filename: QRSS.cpp
+ * Description: Implementation of methods for the classess QRSS, FSK_SENDER and
+ * CW_SENDER.
+ *
+ *  Author: ja - jaesparza@gmail.com
+ */
+
 #include "QRSS.h"
 
 QRSS::QRSS(AD9850 *oscillator) {
