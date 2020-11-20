@@ -25,6 +25,14 @@ void AD9850::setCalibration(uint16_t calibration) {
     _calibration = calibration;
 }
 
+uint32_t AD9850::getFrequency() {
+    return _freq;
+};
+
+uint8_t AD9850::getPhase() {
+    return (_config >> 3);
+};
+
 void AD9850::init() {
 
     pinMode(_select, OUTPUT);

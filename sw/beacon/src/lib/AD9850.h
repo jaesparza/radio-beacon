@@ -29,16 +29,13 @@ class AD9850 {
     void setCalibration(uint16_t calibration);
 
     void setFrequency(uint32_t freq);
-    uint32_t getFrequency() {
-        return _freq;
-    };
+
+    uint32_t getFrequency();
 
     // 0 .. 31  steps of 11.25 degrees
     void setPhase(uint8_t phase = 0);
 
-    uint8_t getPhase() {
-        return (_config >> 3);
-    };
+    uint8_t getPhase();
 
     void pulsePin(uint8_t pin);
     void writeData();
