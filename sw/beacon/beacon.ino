@@ -13,13 +13,16 @@
  */
 
 #include "./src/QRSS.h"
+#include "./src/WSPR.h"
 #include "./src/lib/AD9850.h"
+
 #include "HardwareConfig.h"
 #include <Arduino.h>
 
 AD9850 *oscillator;
 CW_SENDER *messenger;
-FSK_SENDER *fsk_messenger;
+FSK_SENDER *fskMessenger;
+WSPR *wsprSender;
 
 uint32_t freq = 0;
 
@@ -48,15 +51,17 @@ void setup() {
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
-    oscillator->setFrequency(_30_M);
+    oscillator->setFrequency(_30_M_QRSS);
 
     // Create a CW sender for later use
     messenger = new CW_SENDER(oscillator);
-    messenger->setBaseFrequency(_30_M);
+    messenger->setBaseFrequency(_30_M_QRSS);
 
     // Create a fsk cw sender for later use
-    fsk_messenger = new FSK_SENDER(oscillator);
-    fsk_messenger->setBaseFrequency(_30_M);
+    fskMessenger = new FSK_SENDER(oscillator);
+    fskMessenger->setBaseFrequency(_30_M_QRSS);
+
+    wsprSender = new WSPR(oscillator);
 
     // BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
@@ -64,6 +69,6 @@ void setup() {
 void loop() {
     messenger->txMessage(CW_MESSAGE);
     delay(2000);
-    fsk_messenger->txMessage(QRSS_MESSAGE);
+    fskMessenger->txMessage(QRSS_MESSAGE);
     delay(2000);
 }
