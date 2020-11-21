@@ -31,4 +31,4 @@ Additionally, the timing can be configured through the following definitions in 
 ```
 The snapshot below shows the start of `QRSS_MESSAGE` being transmmited in FSK-CW as captured locally by Argo. This transmission was performed without an amplifier, coming directly from a wire connected to the AD9850 oscillator.
 
-![fsk](doc/images/cqFSKCW.png)
+![fsk](doc/images/cqFSKCW.PNG)
