@@ -2,8 +2,27 @@
 
 Radio beacon for QRSS and WSPR modes, based on a STM32 and an AD9850.
 
-## Puting the beacon on the air
+## Description
+### Software
 
+The software is structured as follows:
+
+```bash
+beacon/
+|── beacon.ino            ## Initialization and entry point
+├── HardwareConfig.h      ## Configuration of hardware connection
+├── src/                                    
+│   ├── lib               ## Library to interface the AD9850 DDS
+|   |   ├── AD9850.h
+|   |   └── AD9850.cpp
+│   ├── QRSS.h            ## QRSS base class and specialized FSK-CW and CW subclasses
+|   |── QRSS.cpp
+|   |── WSPR.h            ## WSPR transmission
+|   |── UWSPR.cpp
+|   └── 
+└── 
+```
+## Puting the beacon on the air
 The beacon can be configured with a custom message, TX frequency, shift and transmission time. The process is as follows:
 
 1. Define the message to be sent under the desired mode.
@@ -21,7 +40,7 @@ For FSK-CW transmission, the process is the same. A separate message will have t
 ```C
 #define QRSS_MESSAGE "CQ OZ/EA2ECV"
 ```
-Additionally, the timing can be configured through the following definitions in the QRSS.h file. It is a must to configure it to suit your needs.
+Additionally, the QRSS timing can be configured through the following definitions in the QRSS.h file. It is a must to configure it to suit your needs.
 ```C
 #define QRSS_DOT    2000 // Duration of a dot in milliseconds
 #define QRSS_WEIGHT 3 // Dash-dot weight, DASH duration = QRSS_DOT * QRSS_WEIGHT
@@ -29,6 +48,6 @@ Additionally, the timing can be configured through the following definitions in 
 
 #define FSK_HIGH 10 // Frequency shift used in the keying 
 ```
-The snapshot below shows the start of `QRSS_MESSAGE` being transmmited in FSK-CW as captured locally by Argo. This transmission was performed without an amplifier, coming directly from a wire connected to the AD9850 oscillator.
+The snapshot below shows the start of `QRSS_MESSAGE` being transmmited in FSK-CW as captured locally by Argo. The transmission of 'CQ' alone took 60s under this configuration. This transmission was performed without an amplifier, coming directly from a wire connected to the AD9850 oscillator.
 
 ![fsk](doc/images/cqFSKCW.PNG)
