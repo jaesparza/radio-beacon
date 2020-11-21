@@ -42,6 +42,8 @@ uint32_t freq = 0;
 #define QRSS_MESSAGE "OZ/EA2ECV"
 #define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 
+#define WSPR_MESSAGE
+
 void setup() {
 
     // Serial output can be activated if needed
