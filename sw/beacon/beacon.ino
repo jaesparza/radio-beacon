@@ -57,11 +57,11 @@ void setup() {
 
     // Create a CW sender for later use
     messenger = new CW_SENDER(oscillator);
-    messenger->setBaseFrequency(_30_M_QRSS);
+    messenger->setBaseFrequency(_30_M_QRSS + SHIFT);
 
     // Create a fsk cw sender for later use
     fskMessenger = new FSK_SENDER(oscillator);
-    fskMessenger->setBaseFrequency(_30_M_QRSS);
+    fskMessenger->setBaseFrequency(_30_M_QRSS + SHIFT);
 
     wsprSender = new WSPR(oscillator);
 
