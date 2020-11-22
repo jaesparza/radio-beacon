@@ -1,6 +1,8 @@
 
 ## File overview
 
+The software is organized as described below. This folder structure is required to compile with the arduino environment (compiled with 1.8.10).
+
 ```bash
 beacon/
 |── beacon.ino            ## Initialization and entry point
@@ -30,4 +32,16 @@ Make sure to set the correct hardware configuration in `HardwareConfig.h` depend
 #define BEACON_SERIAL Serial1
 #define SPI_N         2
 #define _5_5_COMPATIBLE
+```
+
+## Compilation
+
+In my setup, I use vscode with the arduino plug-in configured as follows for a STM32 "blue-pill" board:
+```json
+{
+    "board": "stm32duino:STM32F1:genericSTM32F103C",
+    "configuration": "device_variant=STM32F103C8,upload_method=STLinkMethod,cpu_speed=speed_72mhz,opt=osstd",
+    "port": "COM16",
+    "sketch": "sw\\beacon\\beacon.ino"
+}
 ```
