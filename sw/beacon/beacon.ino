@@ -33,6 +33,8 @@ uint32_t freq = 0;
 #define _30_M_QRSS 10140000 // 10MHz
 #define _20_M_QRSS 14096900 // 14MHz
 
+#define _10MHZ 10000000 // 10MHz target calibration
+
 #define SHIFT                                                                  \
     0 // [Hz] Hardcoded eviation around the center QRSS frequency. Based on the
       // current bandplan in can range from -100 to +100 Hz
@@ -52,6 +54,10 @@ void setup() {
     // Create an oscillator instance, calibrate it and set initial frequency
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
+    oscillator->setCalibration(CALIBRATION);
+
+    // oscillator->setFrequency(_10MHZ);
+
     oscillator->setCalibration(CALIBRATION);
     oscillator->setFrequency(_30_M_QRSS);
 
