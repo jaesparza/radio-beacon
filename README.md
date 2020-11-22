@@ -1,27 +1,37 @@
-# radio-beacon
+# Multimode radio beacon
+> - Make sure that you comply with local radio regulations before building and deploying this.
+> - I make no claims with regards to electrical safety, RF safety, EMC compatibility or compliance to standards of any kind.
 
-Radio beacon for QRSS and WSPR modes, based on a STM32 and an AD9850.
+This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is built around an STM32 and a AD9850 DDS. It works by driving directly the DDS in order to implement the different modulations (frequecy shift keying and ON/OF keying). Having all the components at hand, the beacon can be put to work at least in one mode in a weekend and completed under a couple.
 
-## Description
-### Software
+## Implementation
+### [Software](https://github.com/jaesparza/radio-beacon/tree/main/sw/beacon)
 
-The software is structured as follows:
+The software is written in C++ and compiled using the arduino platform. No additional libraries are needed.
 
-```bash
-beacon/
-|── beacon.ino            ## Initialization and entry point
-├── HardwareConfig.h      ## Configuration of hardware connection
-├── src/                                    
-│   ├── lib               ## Library to interface the AD9850 DDS
-|   |   ├── AD9850.h
-|   |   └── AD9850.cpp
-│   ├── QRSS.h            ## QRSS base class and specialized FSK-CW and CW subclasses
-|   |── QRSS.cpp
-|   |── WSPR.h            ## WSPR transmission
-|   |── UWSPR.cpp
-|   └── 
-└── 
+Initialization and entry point are in `beacon.ino`. QRSS and WSPR modes are defined and implemented in their respective classes. Very simple and straightforward code, feel free to mofify it to suit your needs.
+
+### Hardware
 ```
+Writing on progress...
+```
+
+## Calibrating the oscillator with an external frequency counter 
+
+1. Set the oscillator to the desired frequency f.
+```C
+#define _10MHZ 10000000 // 10MHz calibration signal
+oscillator->setFrequency(_10MHZ);
+```
+2. Turn on the frequency counter and let it be powered for a period of time so the reference estabilizes. Connect the frequency counter to the oscillator output.
+3. Take readout from the frequency counter and substract desired frequency. Assign that value to de `CALIBRATION` define.
+```C
+#define CALIBRATION  100 // [Hz] Hardcoded calibration factor for the oscillator
+```
+4. Repeat from step 1 until the oscillator is as close as possible to the target frequency.
+
+I have been able to get the oscillator tuned to 10MHz with a deviation of 0.4 Hz. Measured with a Racal frequency counter with ovenized reference.
+
 ## Puting the beacon on the air
 The beacon can be configured with a custom message, TX frequency, shift and transmission time. The process is as follows:
 
