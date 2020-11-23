@@ -30,14 +30,14 @@ void CW_SENDER::dot() {
     _oscillator->setFrequency(_baseFrequency);
     delay(DOT_CW);
     _oscillator->setFrequency(0);
-    delay(100);
+    delay(CW_DELAY); // pause after symbol set to one dot duration
 }
 
 void CW_SENDER::dash() {
     _oscillator->setFrequency(_baseFrequency);
     delay(DOT_CW * DASH_WEIGHT);
     _oscillator->setFrequency(0);
-    delay(100);
+    delay(CW_DELAY); // pause after symbol set to one dot duration
 }
 
 void CW_SENDER::stop() {

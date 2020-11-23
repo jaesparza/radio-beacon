@@ -20,6 +20,7 @@
 
 #define DASH_WEIGHT 3
 #define DOT_CW      100
+#define CW_DELAY    DOT_CW
 
 #define QRSS_DOT    2000
 #define QRSS_WEIGHT 3
