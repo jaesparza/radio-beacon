@@ -13,7 +13,10 @@
 
 #include <string.h>
 
-#define WSPR_TONE_SEPARATION   1.468
+// Keep in mind that WSPR_TONE_SEPARATION is treated as a double by the
+// compiler. Cast it as needed before providing this value to the oscillator
+#define WSPR_TONE_SEPARATION 1.468
+
 #define WSPR_MESSAGE_LENGTH    162
 #define WSPR_INTERSYMBOL_DELAY 683
 
