@@ -17,7 +17,6 @@
 #include "./src/lib/AD9850.h"
 
 #include "HardwareConfig.h"
-#include <Arduino.h>
 
 AD9850 *oscillator;
 CW_SENDER *messenger;
@@ -33,6 +32,12 @@ uint32_t freq = 0;
 #define _30_M_QRSS 10140000 // 10MHz
 #define _20_M_QRSS 14096900 // 14MHz
 
+// Dial freq     | TX freq
+// 20m 14.095600 | 14.097000 - 14.097200
+// 30m 10.138700 | 10.140100 - 10.140300
+#define _30_M_WSPR 10140100
+#define _20_M_WSPR 14097000
+
 #define _10MHZ 10000000 // 10MHz target calibration
 
 #define SHIFT                                                                  \
@@ -44,39 +49,51 @@ uint32_t freq = 0;
 #define QRSS_MESSAGE "OZ/EA2ECV"
 #define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 
-#define WSPR_MESSAGE
-
 void setup() {
 
     // Serial output can be activated if needed
-    // BEACON_SERIAL.begin(115200);
+    BEACON_SERIAL.begin(115200);
 
     // Create an oscillator instance, calibrate it and set initial frequency
     oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
 
+    // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
+    // bands
     // oscillator->setFrequency(_10MHZ);
 
-    oscillator->setCalibration(CALIBRATION);
-    oscillator->setFrequency(_30_M_QRSS);
+    /*
+        // Create a CW sender and tune it
+        messenger = new CW_SENDER(oscillator);
+        messenger->setBaseFrequency(_30_M_QRSS + SHIFT);
 
-    // Create a CW sender for later use
-    messenger = new CW_SENDER(oscillator);
-    messenger->setBaseFrequency(_30_M_QRSS + SHIFT);
+        // Create a fsk cw sender and tune it
+        fskMessenger = new FSK_SENDER(oscillator);
+        fskMessenger->setBaseFrequency(_30_M_QRSS + SHIFT);
+    */
 
-    // Create a fsk cw sender for later use
-    fskMessenger = new FSK_SENDER(oscillator);
-    fskMessenger->setBaseFrequency(_30_M_QRSS + SHIFT);
-
+    // Create a WSPR sender and tune it
     wsprSender = new WSPR(oscillator);
+    wsprSender->setBaseFrequency(_20_M_WSPR);
 
-    // BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
+    BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
 void loop() {
-    messenger->txMessage(CW_MESSAGE);
-    delay(2000);
-    fskMessenger->txMessage(QRSS_MESSAGE);
-    delay(2000);
+
+    wsprSender->sendWSPRmessage();
+
+    /* // Test code for the CW mode
+        messenger->txMessage(CW_MESSAGE);
+        delay(2000);
+    */
+
+    /* // Test code for the QRSS mode
+        fskMessenger->txMessage(QRSS_MESSAGE);
+        delay(2000);
+    */
+
+    while (1) {
+    }
 }
