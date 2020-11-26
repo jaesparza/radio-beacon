@@ -8,22 +8,26 @@
 #ifndef WSPR_MODE
 #define WSPR_MODE
 
+#include "../HardwareConfig.h"
 #include "./lib/AD9850.h"
+
 #include <string.h>
 
-#define TONE_SEPARATION 1.468
+#define WSPR_TONE_SEPARATION   1.468
+#define WSPR_MESSAGE_LENGTH    162
+#define WSPR_INTERSYMBOL_DELAY 683
 
 class WSPR {
   public:
     WSPR(AD9850 *oscillator);
     void setBaseFrequency(uint32_t _baseFrequency);
-    void generateTestWSPRsequence();
+    void generateTestTones();
+    void sendWSPRmessage();
 
   private:
     uint32_t _baseFrequency;
     AD9850 *_oscillator;
-
-    void sendTone(uint8_t tone);
+    void generateTone(uint8_t t);
 };
 
 #endif
