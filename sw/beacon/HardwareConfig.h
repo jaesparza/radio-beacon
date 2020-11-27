@@ -8,6 +8,7 @@
 #define FQUP   24
 
 #define BEACON_SERIAL Serial1
+#define GPS_SERIAL    Serial3
 #define SPI_N         2
 
 #define _5_5_COMPATIBLE
