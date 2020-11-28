@@ -47,7 +47,7 @@ In my setup, I use vscode with the arduino plug-in configured as follows for a S
 ```
 
 The following configuration uses an alternative core definition. Remains to be tested.
-```
+```json
 {
     "board": "STM32:stm32:GenF1",
     "configuration": "pnum=BLUEPILL_F103C6,upload_method=swdMethod,xserial=generic,usb=none,xusb=FS,opt=osstd,rtlib=nano",
