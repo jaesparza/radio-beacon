@@ -26,7 +26,7 @@ WSPR *wsprSender;
 
 uint32_t freq = 0;
 
-TinyGPSPlus gps;
+TinyGPSPlus *gps;
 
 #define CALIBRATION                                                            \
     100 // [Hz] Hardcoded calibration factor for the oscillator (will vary
@@ -83,12 +83,20 @@ void setup() {
     wsprSender = new WSPR(oscillator);
     wsprSender->setBaseFrequency(_20_M_WSPR);
 
+    gps = new TinyGPSPlus();
+
     BEACON_SERIAL.println("QRSS/WSPR Beacon initialized");
 }
 
 void loop() {
 
     wsprSender->sendWSPRmessage();
+
+    /* // Test code to monitor the GPS
+       // Select one function
+        NMEAstringGrabber(); // Prints all the incomping NMEA strings
+        TinyGPStest(); // Prints the hour after filtering NMEA strings
+    */
 
     /* // Test code for the CW mode
         messenger->txMessage(CW_MESSAGE);
@@ -108,6 +116,23 @@ void NMEAstringGrabber() {
     while (1) {
         while (GPS_SERIAL.available() > 0) {
             BEACON_SERIAL.write(GPS_SERIAL.read());
+        }
+    }
+}
+
+void TinyGPStest() {
+    while (1) {
+        while (GPS_SERIAL.available() > 0) {
+            gps->encode(GPS_SERIAL.read());
+            if (gps->time.isUpdated()) {
+                BEACON_SERIAL.print("UTC time: ");
+                BEACON_SERIAL.print(gps->time.hour()); // Hour (0-23) (u8)
+                BEACON_SERIAL.print(":");
+                BEACON_SERIAL.print(gps->time.minute()); // Minute (0-59) (u8)
+                BEACON_SERIAL.print(":");
+                BEACON_SERIAL.print(gps->time.second()); // Second (0-59) (u8)
+                BEACON_SERIAL.println();
+            }
         }
     }
 }
