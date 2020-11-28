@@ -28,18 +28,6 @@ uint32_t freq = 0;
 
 TinyGPSPlus gps;
 
-/*
- * Test function to get NMEA strings from the GPS looped back to the PC through
- * the serial port.
- */
-void NMEAstringGrabber() {
-    while (1) {
-        while (GPS_SERIAL.available() > 0) {
-            BEACON_SERIAL.write(GPS_SERIAL.read());
-        }
-    }
-}
-
 #define CALIBRATION                                                            \
     100 // [Hz] Hardcoded calibration factor for the oscillator (will vary
         // across samples)
@@ -71,13 +59,15 @@ void setup() {
     GPS_SERIAL.begin(9600);
 
     // Create an oscillator instance, calibrate it and set initial frequency
-    oscillator = new AD9850(SPI_N, SPI_CLOCK, SELECT, RESET, FQUP);
+    oscillator = new AD9850(SPI_N, SPI_CLOCK, PIN_SELECT, PIN_RESET, PIN_FQUP);
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
 
-    // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
-    // bands
-    // oscillator->setFrequency(_10MHZ);
+    /*
+        // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
+        // bands
+        oscillator->setFrequency(_10MHZ);
+    */
 
     /*
         // Create a CW sender and tune it
@@ -111,5 +101,13 @@ void loop() {
     */
 
     while (1) {
+    }
+}
+
+void NMEAstringGrabber() {
+    while (1) {
+        while (GPS_SERIAL.available() > 0) {
+            BEACON_SERIAL.write(GPS_SERIAL.read());
+        }
     }
 }

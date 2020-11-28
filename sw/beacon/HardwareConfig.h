@@ -3,9 +3,9 @@
 #ifndef HARDWARECONFIG_H_
 #define HARDWARECONFIG_H_
 
-#define SELECT 4
-#define RESET  25
-#define FQUP   24
+#define PIN_SELECT 4
+#define PIN_RESET  25
+#define PIN_FQUP   24
 
 #define BEACON_SERIAL Serial1
 #define GPS_SERIAL    Serial3
