@@ -94,7 +94,6 @@ void setup() {
     BEACON_SERIAL.println("--> QRSS/WSPR Beacon initialized");
 
     timeKeeper->syncRTC();
-    // timeKeeper->registerAlarmFuntion(beaconTX, 10);
     timeKeeper->scheduleNextWSPRTX(beaconTX);
 
     BEACON_SERIAL.println("--> RTC synchronized to GPS time");
@@ -132,8 +131,10 @@ void loop() {
     */
 }
 
+/*
+ Executed from an interrupt context, so only signal the main loop
+ through a volatile variable that Tx has to begin.
+*/
 void beaconTX() {
-    // timeKeeper->registerAlarmFuntion(beaconTX, 10);
     TX_triggered = true;
-    // timeKeeper->scheduleNextWSPRTX(beaconTX);
 }
