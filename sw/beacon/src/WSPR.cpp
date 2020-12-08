@@ -43,6 +43,20 @@ uint8_t EXAMPLE_WSPR_DATA[] = {
     2, 0, 2, 3, 3, 2, 3, 2, 3, 3, 2, 0, 0, 3, 1, 2, 2, 2,
 };
 
+/*
+ * My WSPR frame "OU2ECV JO65 23"
+ *
+ */
+uint8_t MY_WSPR_DATA[] = {
+    3, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 1, 3, 1, 2, 0, 2, 1, 0, 2, 1, 0, 3,
+    3, 3, 3, 0, 0, 0, 2, 2, 2, 0, 1, 2, 0, 1, 2, 1, 2, 0, 2, 2, 2, 0, 1, 0,
+    3, 1, 0, 2, 1, 1, 2, 1, 2, 0, 0, 1, 3, 2, 3, 2, 0, 2, 0, 3, 1, 2, 1, 0,
+    3, 0, 1, 0, 3, 0, 0, 3, 2, 2, 3, 2, 1, 1, 2, 2, 2, 3, 1, 2, 3, 0, 1, 0,
+    0, 0, 1, 2, 2, 0, 0, 0, 3, 0, 2, 1, 0, 2, 3, 3, 3, 0, 1, 3, 0, 0, 3, 1,
+    0, 1, 2, 0, 0, 3, 1, 3, 2, 0, 0, 0, 0, 3, 2, 1, 2, 0, 1, 3, 2, 0, 0, 0,
+    2, 0, 2, 3, 3, 0, 3, 2, 1, 1, 0, 0, 0, 1, 1, 0, 2, 0,
+};
+
 void WSPR::generateTone(uint8_t t) {
     uint32_t tone = _baseFrequency + (t)*WSPR_TONE_SEPARATION;
     // The actual frequencies for each tone will be:
@@ -53,7 +67,7 @@ void WSPR::generateTone(uint8_t t) {
 
 void WSPR::sendWSPRmessage() {
     for (uint8_t i = 0; i < WSPR_MESSAGE_LENGTH; i++) {
-        generateTone(EXAMPLE_WSPR_DATA[i]);
+        generateTone(MY_WSPR_DATA[i]);
         delay(WSPR_INTERSYMBOL_DELAY);
     }
     generateTone(0);
