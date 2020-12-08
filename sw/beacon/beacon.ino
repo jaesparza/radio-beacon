@@ -114,6 +114,7 @@ void loop() {
     timeKeeper->monitorRTC();
     if (TX_triggered) {
         BEACON_SERIAL.println("Beacon sending WSPR frame");
+        wsprSender->sendWSPRmessage();
         timeKeeper->scheduleNextWSPRTX(beaconTX);
         TX_triggered = false;
     }
