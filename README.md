@@ -1,4 +1,7 @@
 # Multimode radio beacon
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f8016682e9df420782b7d66f2a9a6b9e)](https://app.codacy.com/gh/jaesparza/radio-beacon?utm_source=github.com&utm_medium=referral&utm_content=jaesparza/radio-beacon&utm_campaign=Badge_Grade)
+
 > - Make sure that you comply with local radio regulations before building and deploying this.
 > - I make no claims with regards to electrical safety, RF safety, EMC compatibility or compliance to standards of any kind.
 
