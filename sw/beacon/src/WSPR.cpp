@@ -45,13 +45,6 @@ uint8_t EXAMPLE_WSPR_DATA[] = {
 
 /*
  * My WSPR frame "OU2ECV JO65 23"
- * To generate your own under windows, execute from cmd:
- * c:\> WSPRcode "AB2CDE XX99 00"
- * where AB2CDE is your callsing, XX99 your 4 digit locator and 00 your tx power
- * in dbm.
- *
- * To convert watts into dbm in a 50 ohms system, you can use an online
- * calculator, a conversion tables, etc...
  */
 uint8_t MY_WSPR_DATA[] = {
     3, 3, 2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 1, 3, 1, 2, 0, 2, 1, 0, 2, 1, 0, 3,
