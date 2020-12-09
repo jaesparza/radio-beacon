@@ -97,11 +97,13 @@ void TimeSync::registerAlarmFuntion(voidFuncPtr triggeredFunction,
     _rt->attachAlarmInterrupt(triggeredFunction, _rt->getTime() + secondsAhead);
 }
 
-void TimeSync::scheduleNextWSPRTX(voidFuncPtr triggeredFunction) {
-
+void TimeSync::scheduleNextWSPRTX(voidFuncPtr triggeredFunction,
+                                  uint16_t minutes) {
     // Get the current time
     _rt->breakTime(_rt->now(), _mtt);
-    _mtt.minute = ((_mtt.minute % 2) == 0) ? _mtt.minute + 2 : _mtt.minute + 1;
+    _mtt.minute = (((_mtt.minute + minutes) % 2) == 0)
+                      ? _mtt.minute + minutes + 2
+                      : _mtt.minute + minutes + 1;
     _mtt.second = 0;
     // Set the alarm for the next even minute
     _rt->createAlarm(triggeredFunction, _mtt);

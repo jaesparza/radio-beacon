@@ -56,6 +56,9 @@ RTClock *rt;
 #define QRSS_MESSAGE "OZ/EA2ECV"
 #define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 
+#define SCHEDULE_FOR_NEXT_SLOT 0
+#define TX_PERIOD              0
+
 void setup() {
 
     // Serial output can be activated if needed
@@ -67,11 +70,9 @@ void setup() {
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
 
-    /*
-        // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
-        // bands
-        oscillator->setFrequency(_10MHZ);
-    */
+    // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
+    // bands
+    // oscillator->setFrequency(_10MHZ);
 
     /*
         // Create a CW sender and tune it
@@ -94,7 +95,7 @@ void setup() {
     BEACON_SERIAL.println("--> QRSS/WSPR Beacon initialized");
 
     timeKeeper->syncRTC();
-    timeKeeper->scheduleNextWSPRTX(beaconTX);
+    timeKeeper->scheduleNextWSPRTX(beaconTX, SCHEDULE_FOR_NEXT_SLOT);
 
     BEACON_SERIAL.println("--> RTC synchronized to GPS time");
 }
@@ -106,20 +107,14 @@ void loop() {
     // The txMessages functions will block until the whole message has been
     // transmitted, nothing else will run during that process.
 
-    /* // Test code to monitor the GPS or the RTC
-       // Select one function
-      timeKeeper->getGPStime(); // Prints the hour after filtering NMEA strings
-      timeKeeper->NMEAstringGrabber(); // Prints all the incomping NMEA strings
-     */
     timeKeeper->monitorRTC();
+
     if (TX_triggered) {
         BEACON_SERIAL.println("Beacon sending WSPR frame");
         wsprSender->sendWSPRmessage();
-        timeKeeper->scheduleNextWSPRTX(beaconTX);
+        timeKeeper->scheduleNextWSPRTX(beaconTX, 5);
         TX_triggered = false;
     }
-
-    // wsprSender->sendWSPRmessage();
 
     /* // Test code for the CW mode
         messenger->txMessage(CW_MESSAGE);

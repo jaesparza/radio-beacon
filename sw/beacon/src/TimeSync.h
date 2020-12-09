@@ -13,7 +13,9 @@ class TimeSync {
     uint8_t syncRTC();
     void monitorRTC();
     void getGPStime();
-    void scheduleNextWSPRTX(voidFuncPtr triggeredFunction);
+
+    void scheduleNextWSPRTX(voidFuncPtr triggeredFunction, uint16_t minutes);
+
     void NMEAstringGrabber();
     void registerAlarmFuntion(voidFuncPtr triggeredFunction,
                               uint8_t secondsAhead);
