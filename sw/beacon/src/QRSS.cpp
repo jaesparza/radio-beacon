@@ -102,7 +102,7 @@ void QRSS::txMessage(char *word) {
     uint16_t messageLength = strlen(word);
 
     // It will go through the message character by character and send it
-    for (uint16_t myChar = 0; myChar < strlen(word); myChar++) {
+    for (uint16_t myChar = 0; myChar < messageLength; myChar++) {
         txLetter(charCode((uint8_t)word[myChar]));
     }
 }
