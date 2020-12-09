@@ -112,19 +112,16 @@ void loop() {
     if (TX_triggered) {
         BEACON_SERIAL.println("Beacon sending WSPR frame");
         wsprSender->sendWSPRmessage();
+
+        // Test code for the CW mode
+        // messenger->txMessage(CW_MESSAGE);
+
+        // Test code for the QRSS mode
+        // fskMessenger->txMessage(QRSS_MESSAGE);
+
         timeKeeper->scheduleNextWSPRTX(beaconTX, 5);
         TX_triggered = false;
     }
-
-    /* // Test code for the CW mode
-        messenger->txMessage(CW_MESSAGE);
-        delay(2000);
-    */
-
-    /* // Test code for the QRSS mode
-        fskMessenger->txMessage(QRSS_MESSAGE);
-        delay(2000);
-    */
 }
 
 /*
