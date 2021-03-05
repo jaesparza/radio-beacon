@@ -2,10 +2,13 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f8016682e9df420782b7d66f2a9a6b9e)](https://app.codacy.com/gh/jaesparza/radio-beacon?utm_source=github.com&utm_medium=referral&utm_content=jaesparza/radio-beacon&utm_campaign=Badge_Grade)
 
+
+This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is built around an STM32 and a AD9850 DDS. It works by driving directly the DDS in order to implement the different modulations (Frequecy Shift Keying and ON/OF keying). Having all the components at hand, the beacon can be put to work at least in one mode in a weekend and completed under a couple.
+
 > - Make sure that you comply with local radio regulations before building and deploying this.
 > - I make no claims with regards to electrical safety, RF safety, EMC compatibility or compliance to standards of any kind.
 
-This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is built around an STM32 and a AD9850 DDS. It works by driving directly the DDS in order to implement the different modulations (frequecy shift keying and ON/OF keying). Having all the components at hand, the beacon can be put to work at least in one mode in a weekend and completed under a couple.
+<img src="doc/images/assembled.jpg" alt="drawing" width="800"/>
 
 ## Implementation
 ### [Software](https://github.com/jaesparza/radio-beacon/tree/main/sw/beacon)
@@ -16,7 +19,7 @@ Initialization and entry point are in `beacon.ino`. QRSS and WSPR modes are defi
 
 ### Hardware
 ```
-Writing on progress...
+Writing in progress...
 ```
 
 ## Calibrating the oscillator with an external frequency counter 
