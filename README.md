@@ -2,8 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f8016682e9df420782b7d66f2a9a6b9e)](https://app.codacy.com/gh/jaesparza/radio-beacon?utm_source=github.com&utm_medium=referral&utm_content=jaesparza/radio-beacon&utm_campaign=Badge_Grade)
 
-
-This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is built around an STM32 and a AD9850 DDS. It works by driving directly the DDS in order to implement the different modulations (Frequecy Shift Keying and ON/OF keying). Having all the components at hand, the beacon can be put to work at least in one mode in a weekend and completed under a couple.
+This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is built around an STM32 and a AD9850 DDS. It works by driving directly the DDS in order to implement the different modulations (Frequecy Shift Keying and ON/OF keying). Having all the components at hand, the beacon can be put together over a weekend.
 
 > - Make sure that you comply with local radio regulations before building and deploying this.
 > - I make no claims with regards to electrical safety, RF safety, EMC compatibility or compliance to standards of any kind.
@@ -15,12 +14,14 @@ This is a radio beacon for the modes WSPR and QRRS (FSK-CW, CW). The beacon is b
 
 The software is written in C++ and compiled using the arduino platform. No additional libraries are needed.
 
-Initialization and entry point are in `beacon.ino`. QRSS and WSPR modes are defined and implemented in their respective classes. Very simple and straightforward code, feel free to mofify it to suit your needs.
+Initialization and entry point are in `beacon.ino`. QRSS and WSPR modes are defined and implemented in their respective classes. Very simple and straightforward code, feel free to modify it to suit your needs.
 
 ### Hardware
-```
-Writing in progress...
-```
+The beacon is implemented using mostly standard, off-the-shelve, modules. Only the power amplifier stage has been built from discrete components. The schematic of the PA stage is shown below.
+
+<img src="doc/images/amplifierSchematic.PNG" alt="schematic"  width="800">
+
+The low pass filter is a single-band filter kit from [QRP labs](https://qrp-labs.com/). Building and calcuating filters for HF can also be accomplised easily by using one of the myriad of on-line calculators available or by following the configurations explained in most RF handbooks.
 
 ## Calibrating the oscillator with an external frequency counter 
 
@@ -46,6 +47,8 @@ The beacon can be configured with a custom message, TX frequency, shift and tran
 3. Set the delay between transmissions in seconds.
 4. Beacon will transmit periodically.
 
+### QRSS
+
 ```C
 #define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 #define _30_M_QRSS 10140000 // 10MHz
@@ -67,3 +70,6 @@ Additionally, the QRSS timing can be configured through the following definition
 The snapshot below shows the start of `QRSS_MESSAGE` being transmmited in FSK-CW as captured locally by Argo. The transmission of 'CQ' alone took 60s under this configuration. This transmission was performed without an amplifier, coming directly from a wire connected to the AD9850 oscillator.
 
 ![fsk](doc/images/cqFSKCW.PNG)
+
+### WSPR
+The process to transmitt in WSPR mode is similar to the one presente above. The main difference is that the data is not encoded as a direct translation from alphabet to morse but using WSPR encoding instead. The channel symbols are generated as described in the [configuration section](https://github.com/jaesparza/radio-beacon/tree/main/sw/beacon#configure-your-own-wspr-frame).
