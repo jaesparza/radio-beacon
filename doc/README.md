@@ -8,7 +8,7 @@
 ## Schematics
 
 ### AD9850 Schematic
-![adBreakoutBoard](images/ad9850Breakout.jpg)
+![adBreakoutBoard](images/ad9850BreakOut.jpg)
 
 ### STM32 Bluepill
 ![bpSchematic](images/bpSchematic.png)
