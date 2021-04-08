@@ -2,3 +2,5 @@
 .vscode/c_cpp_properties.json
 scratchpad
 .vscode/settings.json
+*.bak
+hw/radio-beacon/radio-beacon-cache.lib
