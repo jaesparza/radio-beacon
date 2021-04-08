@@ -1,0 +1,241 @@
+EESchema Schematic File Version 4
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 2
+Title "Low power beacon output stage"
+Date "2021-04-08"
+Rev "0.1"
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Regulator_Linear:L7805 U1
+U 1 1 606E9FFE
+P 4050 3350
+F 0 "U1" H 4050 3592 50  0000 C CNN
+F 1 "L7805" H 4050 3501 50  0000 C CNN
+F 2 "" H 4075 3200 50  0001 L CIN
+F 3 "http://www.st.com/content/ccc/resource/technical/document/datasheet/41/4f/b3/b0/12/d4/47/88/CD00000444.pdf/files/CD00000444.pdf/jcr:content/translations/en.CD00000444.pdf" H 4050 3300 50  0001 C CNN
+	1    4050 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT RV1
+U 1 1 606EA89B
+P 4750 3350
+F 0 "RV1" V 4543 3350 50  0000 C CNN
+F 1 "4k7" V 4634 3350 50  0000 C CNN
+F 2 "" H 4750 3350 50  0001 C CNN
+F 3 "~" H 4750 3350 50  0001 C CNN
+	1    4750 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Transistor_FET:BS170 Q1
+U 1 1 606EB066
+P 5250 4250
+F 0 "Q1" H 5456 4296 50  0000 L CNN
+F 1 "BS170" H 5456 4205 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 5450 4175 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/BS/BS170.pdf" H 5250 4250 50  0001 L CNN
+	1    5250 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 606EC3CA
+P 4350 4250
+F 0 "C2" V 4098 4250 50  0000 C CNN
+F 1 "104nF" V 4189 4250 50  0000 C CNN
+F 2 "" H 4388 4100 50  0001 C CNN
+F 3 "~" H 4350 4250 50  0001 C CNN
+	1    4350 4250
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:L_Core_Ferrite L1
+U 1 1 606ED6C8
+P 5350 3700
+F 0 "L1" H 5438 3746 50  0000 L CNN
+F 1 "25 turns, FT37-43" H 5450 3650 50  0000 L CNN
+F 2 "" H 5350 3700 50  0001 C CNN
+F 3 "~" H 5350 3700 50  0001 C CNN
+	1    5350 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_Coaxial J1
+U 1 1 606EE1AC
+P 3350 4250
+F 0 "J1" H 3278 4488 50  0000 C CNN
+F 1 "RF_in" H 3278 4397 50  0000 C CNN
+F 2 "" H 3350 4250 50  0001 C CNN
+F 3 " ~" H 3350 4250 50  0001 C CNN
+	1    3350 4250
+	-1   0    0    -1  
+$EndComp
+$Sheet
+S 6500 3850 1000 300 
+U 606EF466
+F0 "Low pass filter" 50
+F1 "LPF.sch" 50
+F2 "RFin" I L 6500 4000 50 
+F3 "RFout" O R 7500 4000 50 
+$EndSheet
+$Comp
+L Connector:Conn_Coaxial J2
+U 1 1 606F0E96
+P 7950 4000
+F 0 "J2" H 8050 3975 50  0000 L CNN
+F 1 "RF_out" H 8050 3884 50  0000 L CNN
+F 2 "" H 7950 4000 50  0001 C CNN
+F 3 " ~" H 7950 4000 50  0001 C CNN
+	1    7950 4000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 606F1D96
+P 4750 4000
+F 0 "R1" H 4820 4046 50  0000 L CNN
+F 1 "4k7" H 4820 3955 50  0000 L CNN
+F 2 "" V 4680 4000 50  0001 C CNN
+F 3 "~" H 4750 4000 50  0001 C CNN
+	1    4750 4000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7750 4000 7500 4000
+$Comp
+L power:GND #PWR04
+U 1 1 606F4AB2
+P 7950 4500
+F 0 "#PWR04" H 7950 4250 50  0001 C CNN
+F 1 "GND" H 7955 4327 50  0000 C CNN
+F 2 "" H 7950 4500 50  0001 C CNN
+F 3 "" H 7950 4500 50  0001 C CNN
+	1    7950 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 4200 7950 4500
+$Comp
+L power:GND #PWR01
+U 1 1 606FFF0A
+P 3350 4600
+F 0 "#PWR01" H 3350 4350 50  0001 C CNN
+F 1 "GND" H 3355 4427 50  0000 C CNN
+F 2 "" H 3350 4600 50  0001 C CNN
+F 3 "" H 3350 4600 50  0001 C CNN
+	1    3350 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 60700ACE
+P 4050 3850
+F 0 "#PWR02" H 4050 3600 50  0001 C CNN
+F 1 "GND" H 4055 3677 50  0000 C CNN
+F 2 "" H 4050 3850 50  0001 C CNN
+F 3 "" H 4050 3850 50  0001 C CNN
+	1    4050 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3350 4600 3350 4550
+Wire Wire Line
+	4750 4150 4750 4250
+Wire Wire Line
+	4750 4250 5050 4250
+$Comp
+L power:GND #PWR03
+U 1 1 60703B72
+P 5050 3550
+F 0 "#PWR03" H 5050 3300 50  0001 C CNN
+F 1 "GND" H 5055 3377 50  0000 C CNN
+F 2 "" H 5050 3550 50  0001 C CNN
+F 3 "" H 5050 3550 50  0001 C CNN
+	1    5050 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 4250 4750 4250
+Connection ~ 4750 4250
+Wire Wire Line
+	5350 4450 5350 4550
+Connection ~ 3350 4550
+Wire Wire Line
+	3350 4550 3350 4450
+$Comp
+L Device:C C1
+U 1 1 6070D767
+P 3550 3600
+F 0 "C1" H 3435 3554 50  0000 R CNN
+F 1 "104nF" H 3435 3645 50  0000 R CNN
+F 2 "" H 3588 3450 50  0001 C CNN
+F 3 "~" H 3550 3600 50  0001 C CNN
+	1    3550 3600
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3750 3350 3550 3350
+Wire Wire Line
+	3550 3350 3550 3450
+Wire Wire Line
+	3350 4550 5350 4550
+Wire Wire Line
+	3550 4250 4200 4250
+Wire Wire Line
+	3550 3750 3550 3800
+Wire Wire Line
+	3550 3800 4050 3800
+Wire Wire Line
+	4050 3650 4050 3800
+Wire Wire Line
+	4050 3850 4050 3800
+Connection ~ 4050 3800
+Text GLabel 3300 3350 0    50   Input ~ 0
+Vcc
+Wire Wire Line
+	3300 3350 3550 3350
+Connection ~ 3550 3350
+Text GLabel 5300 3350 0    50   Input ~ 0
+Vcc
+Wire Wire Line
+	4350 3350 4600 3350
+Wire Wire Line
+	4750 3500 4750 3850
+Wire Wire Line
+	4900 3350 5050 3350
+Wire Wire Line
+	5050 3350 5050 3550
+Wire Wire Line
+	5300 3350 5350 3350
+Wire Wire Line
+	5350 3350 5350 3550
+$Comp
+L Device:C C3
+U 1 1 606EC011
+P 6200 4000
+F 0 "C3" V 6350 3900 50  0000 C CNN
+F 1 "100nF" V 6350 4100 50  0000 C CNN
+F 2 "" H 6238 3850 50  0001 C CNN
+F 3 "~" H 6200 4000 50  0001 C CNN
+	1    6200 4000
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6350 4000 6500 4000
+Wire Wire Line
+	5350 3850 5350 4000
+Wire Wire Line
+	6050 4000 5350 4000
+Connection ~ 5350 4000
+Wire Wire Line
+	5350 4000 5350 4050
+$EndSCHEMATC
