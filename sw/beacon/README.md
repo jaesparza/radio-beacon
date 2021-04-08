@@ -64,7 +64,7 @@ void WSPR::generateTestTones() {
 }
 ```
 
-## Configure your won WSPR frame
+## Configure your own WSPR frame
 Your custom WSPR frame shall be provided in a `uint8_t` array to the WSPR class. This is defined now at compile-time. To generate your own frame under windows, you can use WSPRcode. In the example below AB2CDE is the callsing, XX99 the 4 digit locator and 00 the tx power in dbm.
 
 To convert watts into dbm in a 50 ohms system, you can use an online calculator, a conversion table, etc...
