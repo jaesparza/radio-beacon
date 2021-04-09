@@ -69,5 +69,5 @@ void WSPR::sendWSPRmessage() {
         generateTone(MY_WSPR_DATA[i]);
         delay(WSPR_INTERSYMBOL_DELAY);
     }
-    generateTone(0);
+    _oscillator->setFrequency(0);
 }
