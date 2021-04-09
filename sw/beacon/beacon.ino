@@ -33,8 +33,8 @@ TinyGPSPlus *gps;
 RTClock *rt;
 
 #define CALIBRATION                                                            \
-    0 // 100 [Hz] Hardcoded calibration factor for the oscillator (will vary
-      // across samples)
+    100 // 100 [Hz] Hardcoded calibration factor for the oscillator (will vary
+        // across samples)
 
 #define _30_M_QRSS 10140000 // 10MHz
 #define _20_M_QRSS 14096900 // 14MHz
@@ -43,7 +43,7 @@ RTClock *rt;
 // 20m 14.095600 | 14.097000 - 14.097200
 // 30m 10.138700 | 10.140100 - 10.140300
 #define _30_M_WSPR 10140100
-#define _20_M_WSPR 14097000
+#define _20_M_WSPR 14097100
 
 #define _10MHZ 10000000 // 10MHz target calibration
 
@@ -56,8 +56,13 @@ RTClock *rt;
 #define QRSS_MESSAGE "OZ/EA2ECV"
 #define CW_MESSAGE   "OZ/EA2ECV OZ/EA2ECV QTH COPENHAGEN DK 73"
 
+// Will trigger a transmission in the next time slot
 #define SCHEDULE_FOR_NEXT_SLOT 0
-#define TX_PERIOD              0
+
+// Will trigger a tranmission in the next timeslot after 5 minutes
+#define SCHEDULE_TX_PERIODIC 5
+
+#define _CALIBRATE 0
 
 void setup() {
 
@@ -70,9 +75,13 @@ void setup() {
     oscillator->init();
     oscillator->setCalibration(CALIBRATION);
 
-    // Uncomment to calibrate in 30MHz. Modify as needed to calibrate other
-    // bands
-    // oscillator->setFrequency(_10MHZ);
+    if (_CALIBRATE) {
+        // Uncomment to calibrate in the selected band
+        oscillator->setFrequency(_20_M_WSPR);
+        BEACON_SERIAL.println("Calibration mode ON");
+        while (1) {
+        }
+    }
 
     /*
         // Create a CW sender and tune it
@@ -107,9 +116,10 @@ void loop() {
     // The txMessages functions will block until the whole message has been
     // transmitted, nothing else will run during that process.
 
-    timeKeeper->monitorRTC();
+    // timeKeeper->monitorRTC();
 
     if (TX_triggered) {
+        // timeKeeper->monitorRTC();
         BEACON_SERIAL.println("Beacon sending WSPR frame");
         wsprSender->sendWSPRmessage();
 
@@ -119,13 +129,13 @@ void loop() {
         // Test code for the QRSS mode
         // fskMessenger->txMessage(QRSS_MESSAGE);
 
-        timeKeeper->scheduleNextWSPRTX(beaconTX, 5);
+        timeKeeper->scheduleNextWSPRTX(beaconTX, SCHEDULE_TX_PERIODIC);
         TX_triggered = false;
     }
 }
 
 /*
- Executed from an interrupt context, so only signal the main loop
+ Executed from an interrupt context, so it only signals the main loop
  through a volatile variable that Tx has to begin.
 */
 void beaconTX() {
