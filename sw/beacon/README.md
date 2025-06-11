@@ -15,7 +15,6 @@ beacon/
 │   ├── QRSS.h              ## QRSS base class and specialized FSK-CW and CW subclasses
 |   |── QRSS.cpp
 |   |── WSPR.h              ## WSPR transmission
-|   |── UWSPR.cpp
 |   |── TimeSync.h          ## Class to handle RTC to GPS time synchronization and alarms
 |   |── TimeSync.cpp
 |   └── 
